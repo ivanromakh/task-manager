@@ -1,0 +1,35 @@
+{
+  "name": "wood-cut",
+  "version": "1.0.0",
+  "description": "Site for wood",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vasil",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.17.1",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "ejs": "^2.5.6",
+    "express": "^4.15.2",
+    "express-fileupload": "^0.1.3",
+    "express-session": "^1.15.2",
+    "express-validator": "^3.1.3",
+    "formidable": "^1.1.1",
+    "mongodb": "^2.2.25",
+    "mongoose": "^4.9.5",
+    "nodemailer": "^4.0.1",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
+    "passport-google-oauth2": "^0.1.6",
+    "passport-instagram": "^1.0.0",
+    "passport-local": "^1.0.0",
+    "passport-twitter": "^1.0.4",
+    "rmdir": "^1.2.0",
+    "underscore": "^1.8.3",
+    "uuid": "^3.0.1"
+  }
+}

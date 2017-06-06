@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include ../partials/head.ejs %>
+    <script src="/javascript/mouse_move.js"></script>
+    <link rel="stylesheet" href="/stylesheets/table.css" >
+    <title> <%= title %> </title>
+  </head>
+  <body>    
+    <% include ../partials/nav-bar.ejs %>
+    <div id="container">
+      <table>
+        <thead>
+          <tr>
+            <td> Task</td>
+            <td> owner name</td>
+            <td> created </td>
+          </tr>
+        </thead>
+        <% _.each(news, function(art) { %>
+          <tbody>
+            <tr class="change-color">
+      	      <td onclick='redirect("<%= top %>", this)' class='title' style='margin:10px'><%=art.title %></td>
+      	      <td onclick='redirect("<%= top %>", this)' style='margin:10px'><%=art.user %></td> 
+      	      <td style='margin:10px'>
+                <%=art.data %>
+                <%if(user == art.username) {%>
+                  <button onclick='deleteArt(this)'>delete</button>
+                <% } %> 
+              </td>
+              
+      	    </tr>
+      	  </tbody>
+        <% }); %>
+      </table>
+      <div id='topic'>
+        <button onclick='addTitle(this)'>
+          Додати обговорення
+        </button>
+      </div>
+    </div>
+    <% include ../partials/fotter.ejs %>
+  <script>
+
+    function redirect(top, obj){
+    	document.location.href = '/news/' + top + '/'+ $(obj).parent().find('.title').text();
+    }
+
+  	function addTitle(obj){
+  		$('#topic').html('<p style="margin:10px">Назва статті</p> \
+  			<input style="margin:10px"></input> \
+  			<p><button onclick="confirm()" style="margin:10px">Створити статтю \
+  			</button></p>');
+  	}
+  	
+  	function confirm(){
+  		if($('#topic input').val()){
+  			var location = window.location.href.toString().split('/');
+  			var collection = location[location.length-1];
+  			$.post("/create-article", {
+  				title: $('#topic input').val(),
+  				collection: collection
+  			})
+  			.done(function(data){
+  				window.location.reload();
+  			});
+  		};
+  	}
+
+    function deleteArt(obj){
+      var artName = $(obj).parent().parent().find('.title').text();
+      var location = window.location.href.toString().split('/');
+      var collection = location[location.length-1];
+      
+      $.post("/delete-article", {
+        title: artName,
+        collection: collection
+      })
+      .done(function(data){
+        window.location.reload();
+      });
+    }
+  </script>
+  </body>
+</html>

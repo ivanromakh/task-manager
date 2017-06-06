@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sign in</title>
+    <% include ../partials/head.ejs %>
+    <link rel="stylesheet" href="/stylesheets/register.css" >
+  </head>
+  <body>
+    <% include ../partials/nav-bar.ejs %>
+    <% if (success_msg.length > 0) { %>
+      <div class="alert alert-success"><%= success_msg %></div>
+    <% } %>
+    <% if (error_msg.length > 0) { %>
+      <div class="alert alert-danger"><%= error_msg %></div>
+    <% } %>
+    <% if (error.length > 0) { %>
+      <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+    <div class="container">
+      <div class="row main">
+        <div class="main-login main-center">
+          <form class="" method="post" action="/users/login">
+            <div class="form-group">
+              <label for="username" class="cols-sm-2 control-label">Login</label>
+              <div class="cols-sm-10">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                  <input type="text" class="form-control" name="username" 
+                    id="username"  placeholder="Enter login"/>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="password" class="cols-sm-2 control-label">Password</label>
+              <div class="cols-sm-10">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                  <input type="password" class="form-control" 
+                    name="password" id="password"  placeholder="Enter password"/>
+                </div>
+              </div>
+            </div>
+            <div class="form-group ">
+              <button type="submit"  class="btn btn-primary btn-lg btn-block login-button">Sign in</button>
+            </div>
+            <img class='move' style='margin:10px;' onclick="facebook()" src="/images/social-icons/facebook.png" height="42" width="42">
+            <img class='move' style='margin:10px;' onclick="google()" 
+              src="/images/social-icons/google.png" height="42" width="42">
+            <img class='move' style='margin:10px;' onclick="twitter()" 
+              src="/images/social-icons/twitter.png" height="42" width="42">
+            <img class='move' style='margin:10px;' onclick="instagram()" 
+              src="/images/social-icons/instagram.png" height="42" width="42">
+          </form>
+        </div>
+      </div>
+    </div>
+    <% include ../partials/fotter.ejs %>
+
+    <script>
+      function facebook(){
+        document.location.href = '/auth/facebook';
+      }
+      function google(){
+        document.location.href = '/auth/google';
+      }
+      function twitter(){
+        document.location.href = '/auth/twitter';
+      }
+      function instagram(){
+        document.location.href = '/auth/instagram';
+      }
+
+      $(document).ready(function(){
+        $('.move').mouseover(function(event){
+          $(this).css("opacity", "0.5"); 
+        });
+
+        $('.move').mouseout(function(event){
+          $(this).css("opacity", "1"); 
+        });
+      });
+    </script>
+  </body>
+</html>

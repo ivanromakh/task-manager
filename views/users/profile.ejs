@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Profile settings</title>
+    <% include ../partials/head.ejs %>
+    <link rel="stylesheet" href="/stylesheets/register.css" >
+  </head>
+  <body>
+    <% include ../partials/nav-bar.ejs %>
+    <% if (success_msg.length > 0) { %>
+      <div class="alert col-md-2 col-md-offset-5 alert-success"><%= success_msg %></div>
+    <% } %>
+    <% if (error_msg.length > 0) { %>
+      <div class="alert col-md-2 col-md-offset-5 alert-danger"><%= error_msg %></div>
+    <% } %>
+    <% if (error.length > 0) { %>
+      <div class="alert col-md-2 col-md-offset-5 alert-danger"><%= error[0].msg %></div>
+    <% } %>
+    
+    <div style='text-align: center; width:50%; margin: 0 auto' class='thumbnail'>
+      <% if(user.image) { %>
+        <img style='width:200px' src='<%= user.image %> ' />
+      <% } %>
+      <% if(!user.image) { %>
+        <img style='width:200px' src="/images/user-icon.png" />
+      <% } %>
+      <form ref='uploadForm' id='uploadForm' enctype="multipart/form-data" method="post">
+        <input style='margin: 0 auto' type="file" name="image" accept="image/x-png,image/gif,image/jpeg" />
+        <p> Name: <%= user.name %></p>
+        <p> Login: <%= user.username %></p>
+        <button type="submit"> Save </button>
+      </form>
+    </div>
+    <% include ../partials/fotter.ejs %>
+  </body>
+</html>
