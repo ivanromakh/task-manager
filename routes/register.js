@@ -1,7 +1,7 @@
 var config = require('../config/config.js')
-    , UUID = require('uuid')
-    , User = require('../models/user')
-    , mailer = require('../mail/mailer.js');
+  , UUID = require('uuid')
+  , User = require('../models/user')
+  , mailer = require('../mail/mailer.js');
 
 
 var message = mailer.message;
@@ -19,6 +19,7 @@ exports.postRegister = function (req, res){
   req.checkBody('username', "Enter login").notEmpty();
   req.checkBody('password', 'Enter password').notEmpty();
   req.checkBody('password2', 'Passwords did not match').equals(req.body.password);
+  
   var errors = req.validationErrors();
 
   if(errors){ 

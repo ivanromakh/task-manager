@@ -6,8 +6,17 @@
     <link rel="stylesheet" href="/stylesheets/table.css" >
     <title> <%= title %> </title>
   </head>
-  <body>    
+  <body>
     <% include ../partials/nav-bar.ejs %>
+
+    <div class='row'>
+      <div 
+        class="alert alert-danger"
+        id="alert-danger" 
+        style="margin: 20%; display:none;">
+      </div>
+    </div>
+
     <div id="container">
       <table>
         <thead>
@@ -15,70 +24,74 @@
             <td> Task</td>
             <td> owner name</td>
             <td> created </td>
+            <td> actions </td>
           </tr>
         </thead>
-        <% _.each(news, function(art) { %>
+        <% _.each(tasks, function(task) { %>
           <tbody>
-            <tr class="change-color">
-      	      <td onclick='redirect("<%= top %>", this)' class='title' style='margin:10px'><%=art.title %></td>
-      	      <td onclick='redirect("<%= top %>", this)' style='margin:10px'><%=art.user %></td> 
-      	      <td style='margin:10px'>
-                <%=art.data %>
-                <%if(user == art.username) {%>
-                  <button onclick='deleteArt(this)'>delete</button>
-                <% } %> 
+            <tr class="change-color" id=<%=task._id %> >
+      	      <td class='title' style='margin:10px'><%=task.title %></td>
+      	      <td style='margin:10px'><%=task.user %></td>
+              <td style='margin:10px'><%=task.date %></td>
+              <td>
+                <button onclick="moveToTask(this)"> See more </button> 
+                <button onclick="deleteTask(this)"> Remove </button>
               </td>
-              
       	    </tr>
       	  </tbody>
         <% }); %>
       </table>
-      <div id='topic'>
-        <button onclick='addTitle(this)'>
-          Додати обговорення
+
+      <div>
+        <label style="margin:10px">Task name:
+          <input id='input-task-name' style="margin:10px"></input>
+        </label>
+        <button onclick="createTask()" style="margin:10px">
+          create
         </button>
       </div>
     </div>
     <% include ../partials/fotter.ejs %>
-  <script>
 
-    function redirect(top, obj){
-    	document.location.href = '/news/' + top + '/'+ $(obj).parent().find('.title').text();
+  <script>
+    function moveToTask(obj) {
+      var id = $(obj).parent().parent().attr("id");
+
+      window.location.href = '/tasks/' + id;
     }
 
-  	function addTitle(obj){
-  		$('#topic').html('<p style="margin:10px">Назва статті</p> \
-  			<input style="margin:10px"></input> \
-  			<p><button onclick="confirm()" style="margin:10px">Створити статтю \
-  			</button></p>');
-  	}
-  	
-  	function confirm(){
-  		if($('#topic input').val()){
-  			var location = window.location.href.toString().split('/');
-  			var collection = location[location.length-1];
-  			$.post("/create-article", {
-  				title: $('#topic input').val(),
-  				collection: collection
-  			})
-  			.done(function(data){
-  				window.location.reload();
-  			});
-  		};
-  	}
+    function deleteTask(obj) {
+      var id = $(obj).parent().parent().attr("id");
 
-    function deleteArt(obj){
-      var artName = $(obj).parent().parent().find('.title').text();
-      var location = window.location.href.toString().split('/');
-      var collection = location[location.length-1];
-      
-      $.post("/delete-article", {
-        title: artName,
-        collection: collection
-      })
-      .done(function(data){
-        window.location.reload();
-      });
+      if(id) {
+        $.post("/tasks/delete-task", {
+          id: id,
+        })
+        .done(function(data) {
+          if(data.error) {
+            $("#alert-danger").css('display', 'inline');
+            $("#alert-danger").html(data.error);
+          } else {
+            window.location.reload();
+          }
+        });
+      }
+    }
+
+    function createTask() {
+      if($('#input-task-name').val()) {
+        $.post("/tasks/create-task", {
+          title: $('#input-task-name').val(),
+        })
+        .done(function(data) {
+          if(data.error) {
+            $("#alert-danger").css('display', 'inline');
+            $("#alert-danger").html(data.error);
+          } else {
+            window.location.reload();
+          }
+        });
+      };
     }
   </script>
   </body>
