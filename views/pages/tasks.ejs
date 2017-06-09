@@ -2,97 +2,94 @@
 <html>
   <head>
     <% include ../partials/head.ejs %>
-    <script src="/javascript/mouse_move.js"></script>
+    <script src="/javascript/tasks.js"></script>
+    <script src="/javascript/tasks.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <link rel="stylesheet" href="/stylesheets/table.css" >
+    <link rel="stylesheet" href="/stylesheets/task-editor.css" >
+    <link rel="stylesheet" href="/stylesheets/chat-box.css" >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
     <title> <%= title %> </title>
   </head>
   <body>
     <% include ../partials/nav-bar.ejs %>
-
-    <div class='row'>
-      <div 
-        class="alert alert-danger"
-        id="alert-danger" 
-        style="margin: 20%; display:none;">
+    <div ng-app="tasks" ng-controller="tasks-controller">
+      <div class='row'>
+        <div 
+          class="alert alert-danger"
+          id="alert-danger" 
+          style="margin: 20%; display:none;">
+        </div>
       </div>
-    </div>
-
-    <div id="container">
-      <table>
-        <thead>
-          <tr>
-            <td> Task</td>
-            <td> owner name</td>
-            <td> created </td>
-            <td> actions </td>
-          </tr>
-        </thead>
-        <% _.each(tasks, function(task) { %>
-          <tbody>
-            <tr class="change-color" id=<%=task._id %> >
-      	      <td class='title' style='margin:10px'><%=task.title %></td>
-      	      <td style='margin:10px'><%=task.user %></td>
-              <td style='margin:10px'><%=task.date %></td>
-              <td>
-                <button onclick="moveToTask(this)"> See more </button> 
-                <button onclick="deleteTask(this)"> Remove </button>
-              </td>
-      	    </tr>
-      	  </tbody>
-        <% }); %>
-      </table>
-
-      <div>
-        <label style="margin:10px">Task name:
-          <input id='input-task-name' style="margin:10px"></input>
-        </label>
-        <button onclick="createTask()" style="margin:10px">
-          create
-        </button>
+      <div class='row'>
+        <div class="col-md-8 left-col" id="container">
+          <div class='row'>
+            <h2 style="text-align: center"> My tasks </h2>
+          </div>
+          <button onclick="showForm(this)"
+            class="btn btn-info btn-lg show-task-form">
+            <span class="glyphicon glyphicon-plus-sign">
+            </span> 
+            Plus
+          </button>
+          <div id='create-task-form'>
+            <label style="margin:10px">Task name:
+              <input id="input-task-name" style="margin:10px" />
+            </label>
+            <button onclick="createTask()" style="margin:10px">
+              create
+            </button>
+          </div>
+          <% _.each(tasks, function(task) { %>
+            <ul class="list-group">
+              <li class="list-group-item" id=<%=task.id %> > 
+                <%=task.title %>
+                <button class="pull-right" onclick="showTask(this)"> See more </button> 
+                <button class="pull-right" onclick="deleteTask(this)"> Remove </button>
+              </li>
+            </ul>
+            <task name=<%=task.name %> />
+          <% }); %>
+        </div>
+        <div right-column">
+          <% if (activeTask) { %>
+            <% include ../partials/chat_box.ejs %>
+            <% include ../partials/invite_form.ejs %>
+          <% } %>
+        </div>
       </div>
     </div>
     <% include ../partials/fotter.ejs %>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      //test angular
+      var app = angular.module('tasks', []);
+      app.controller('tasks-controller', function($scope) {
+        console.log($scope);
+      });
+    </script>
+    <script>
+      var socket = io();
 
-  <script>
-    function moveToTask(obj) {
-      var id = $(obj).parent().parent().attr("id");
+      socket.on('reload-page', function(msg) {
+        console.log('123', msg);
+        window.location.reload();
+      });
 
-      window.location.href = '/tasks/' + id;
-    }
+      $('#update-task').click(function() {
+        var text = $('#task-input-box').val();
+        var taskId = $('#update-task').attr('taskId');
+        var userId = $('#update-task').attr('userId');
 
-    function deleteTask(obj) {
-      var id = $(obj).parent().parent().attr("id");
-
-      if(id) {
-        $.post("/tasks/delete-task", {
-          id: id,
-        })
-        .done(function(data) {
-          if(data.error) {
-            $("#alert-danger").css('display', 'inline');
-            $("#alert-danger").html(data.error);
-          } else {
-            window.location.reload();
-          }
-        });
-      }
-    }
-
-    function createTask() {
-      if($('#input-task-name').val()) {
-        $.post("/tasks/create-task", {
-          title: $('#input-task-name').val(),
-        })
-        .done(function(data) {
-          if(data.error) {
-            $("#alert-danger").css('display', 'inline');
-            $("#alert-danger").html(data.error);
-          } else {
-            window.location.reload();
-          }
-        });
-      };
-    }
-  </script>
+        if(text) {
+          socket.emit('update-task', { 
+            text: text,
+            taskId: taskId,
+            userId: userId
+          });
+        }
+      })
+    </script>
   </body>
 </html>

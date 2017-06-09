@@ -12,6 +12,7 @@ exports.createTask = function(req, res) {
           title: title,
           userId: req.user._id,
           user: req.user.username,
+          users: [{ _id: req.user._id }],
           date: date.toISOString().substring(0, 10)
         });
         

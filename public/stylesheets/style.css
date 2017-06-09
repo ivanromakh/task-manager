@@ -1,0 +1,39 @@
+.left-col {
+	width: 60%;
+	margin: 10px 2% 10px 2%;
+	padding: 10px;
+	border-style: solid;
+	border-color: grey;
+	border-radius: 10px;
+}
+
+.right-column {
+}
+
+#create-task-form {
+	width: 90%;
+	display: none;
+	margin-bottom:10px;
+	border-style: solid;
+	border-color: grey;
+	border-radius: 10px;
+}
+
+.show-task-form {
+	margin-bottom:10px;
+}
+
+.invite-form {
+  display: none;
+  position: absolute;
+  right: 20%;
+  left: 20%;
+  top: 10%;
+  background-color: white;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  border: solid;
+  border-color: grey;
+  border-radius: 15px;
+}

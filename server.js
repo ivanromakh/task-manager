@@ -1,5 +1,8 @@
 // Module dependencies.
 var express = require("express")
+  , app = express()
+  , http = require('http').Server(app)
+  , io = require('socket.io')(http)
   , flash = require('connect-flash')
   , session = require('express-session')
   , expressValidator = require('express-validator')
@@ -11,15 +14,18 @@ var express = require("express")
   , LocalStrategy = require('passport-local').Strategy
   , ejs = require('ejs')
   , fileUpload = require('express-fileupload')
+  , http = require('http').Server(app)
+  , io = require('socket.io')(http)
   
   , auth = require('./routes/auth')
   , users = require("./routes/users")
   , routes = require('./routes/routes')
+  // this file have only auth tokens and ip address 
+  // so this is not present in github
   , config = require('./config/config');
   
-
+var onConnect = require('./socket/socket_connect');
 require('./config/passport.js');
-var app = express();
 
 mongoose.connect(config.db_url);
 var db = mongoose.connection;
@@ -27,7 +33,10 @@ var db = mongoose.connection;
 // All environments
 app.set("views", __dirname + "/views/pages");
 app.set("users", __dirname + "/views/users")
+
 app.set("view engine", "ejs");
+app.engine('jsx', require('express-react-views').createEngine());
+
 app.use(bodyParser({limit: '20mb'}));
 app.use(fileUpload());
 app.use(cookieParser("61d333a8-6325-4506-96e7-a180035cc26f"));
@@ -63,6 +72,8 @@ app.use('/auth', auth);
 app.use("/users", users);
 app.use('/', routes);
 
-app.listen(config.port, config.ipaddress);
+io.on('connection', onConnect);
+
+http.listen(config.port, config.ipaddress);
 
 module.exports = app

@@ -46,6 +46,7 @@ var UserSchema = mongoose.Schema({
 	active: {
 		type: Boolean, default:false
 	},
+	activeTask: String,
 	tasks: [ { title: String, id: String }],
 	confirmId: {
 		type: String 

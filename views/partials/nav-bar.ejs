@@ -1,37 +1,13 @@
 <div id="nav-main">
   <a href="/tasks">Tasks</a>
+  <% if (username) { %>
+    <a style="float:right" href="/users/logout">Logout</a>
+    <a style="float:right" href="/users/profile">Profile</a>
+    <a style="float:right"> <%=username %> </a>
+  <% } %>
+
+  <% if (!username) { %>
+    <a style="float:right" href="/users/register">Sign up</a>
+    <a style="float:right" href="/users/login">Sign in</a>
+  <% } %>
 </div>
-<script>
-  
-  function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for(var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-  }
-  $(document).ready(function(){
-    var userName = getCookie("user");
-    if(userName){
-      $("#nav-main")
-        .append('<a style="float:right" href="/users/logout">Logout</a>')
-        .append('<a style="float:right" href="/users/profile">Profile</a>')
-        .append('<a style="float:right">' + userName + '</a>');
-    }
-    else{
-      $("#nav-main")
-        .append('<a style="float:right" \
-          href="/users/register">Sign up</a>')
-        .append('<a style="float:right" \
-          href="/users/login">Sign in</a>');
-    }
-  });
-</script>

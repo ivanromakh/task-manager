@@ -1,23 +1,22 @@
 var express = require('express')
   , router = express.Router()
 
-  , taskInfo = require("./tasks/taskInfo")
+  , activeTask = require("./tasks/activeTask")
   , createTask = require("./tasks/createTask")
   , deleteTask = require("./tasks/deleteTask")
+  , inviteUser = require("./tasks/inviteUser")
+  , acceptTask = require("./tasks/acceptTask")
   , tasks = require("./tasks/tasks");
 
-router.use("/tasks/delete-task", deleteTask.deleteTask);
-router.use("/tasks/create-task", createTask.createTask);
-router.use("/tasks/:id", taskInfo.taskInfo);
+// ajax
+router.use("/invite-user", inviteUser.inviteUser);
+router.use("/active-task", activeTask.activeTask);
+router.use("/delete-task", deleteTask.deleteTask);
+router.use("/create-task", createTask.createTask);
+
+router.user("/tasks/accept/:id/:token", acceptTask.acceptTask);
 router.use("/tasks", tasks.tasks);
+
 router.use("/", tasks.main);
-
-
-function sendUserName(req, res, next){
-  if(req.isAuthenticated()){
-    res.cookie('user', req.user.username);
-  }
-  next();
-}
 
 module.exports = router;

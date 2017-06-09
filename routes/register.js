@@ -22,24 +22,37 @@ exports.postRegister = function (req, res){
   
   var errors = req.validationErrors();
 
-  if(errors){ 
+  if(errors) { 
+    res.status(400);
     res.render('users/register', {
-      error:errors
+      error:errors,
+      username: null
     });
     return;
   }
-  User.findOne({username: username}, function(err, user){
+  User.findOne({ username: username }, function(err, user){
     if (err) throw err;
-    if (user){
-      res.render('users/register', { error: [{ msg: 'This login is already used' }] });
+    
+    if (user) {
+      res.status(400);
+      res.render('users/register', { 
+        error: [{ msg: 'This login is already used' }],
+        username: null 
+      });
       return;
     }
-    User.findOne({email: email}, function(err, userEmail){
+    User.findOne({ email: email }, function(err, userEmail){
       if (err) throw err;
-      if (userEmail){
-        res.render('users/register', { error: [{ msg: 'this email is already used' }] });
+      
+      if (userEmail) {
+        res.status(400);
+        res.render('users/register', { 
+          error: [{ msg: 'this email is already used' }], 
+          username: null 
+        });
         return;
       }
+
       var id = UUID();
       var newUser = new User({
         name: name,
@@ -49,16 +62,16 @@ exports.postRegister = function (req, res){
         confirmId: id,
         shopping: []
       });
+
       User.createUser(newUser, function(err, user){
         if(err) throw err;
       });
+
       message.to = email;
       message.html = '<p> You must go here <a href="'+ config.host +'/users/confirm/' + id + '"> to confirm your account </a></p>';
       
-      mailer.transporter.sendMail(message, function(error, info){
-          if (error) {
-              return console.log(error);
-          }
+      mailer.transporter.sendMail(message, function(err, info) {
+          if (err) throw err;
       });
       req.flash('success_msg', 'Now you are sign up, but you must check your post for activation link');
       res.redirect('/users/login');

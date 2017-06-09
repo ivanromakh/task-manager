@@ -1,0 +1,112 @@
+<div class="container bootstrap snippet">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="portlet portlet-default">
+        <div class="portlet-heading">
+          <div class="portlet-title">
+            <h4>
+              <i class="fa fa-circle text-green"></i> 
+              <input style="background-color:#000" value="<%= activeTask.title %>" /> 
+            </h4>
+          </div>
+          <div class="portlet-widgets">
+            <div class="btn-group">
+              <button 
+                type="button" 
+                class="btn btn-white dropdown-toggle btn-xs" 
+                data-toggle="dropdown">
+                <i class="fa fa-circle text-green"></i> Status
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#"><i class="fa fa-circle text-green"></i> Online</a>
+                </li>
+                <li><a href="#"><i class="fa fa-circle text-orange"></i> Away</a>
+                </li>
+                <li><a href="#"><i class="fa fa-circle text-red"></i> Offline</a>
+                </li>
+              </ul>
+            </div>
+            <span class="divider"></span>
+            <a 
+              data-toggle="collapse" 
+              data-parent="#accordion" 
+              href="#chat"><i class="fa fa-chevron-down"></i>
+            </a>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div id="chat" class="panel-collapse collapse in">
+          <div>
+            <div 
+              class="portlet-body chat-widget"
+              style="overflow-y: auto; 
+              width: auto;
+              height: 300px;">
+              <div class="row">
+                <div class="col-lg-12">
+                  <p class="text-center text-muted small"> 
+                    <%= activeTask.date %>
+                  </p>
+                </div>
+              </div>
+              <% _.each(messages, function(msg) { %>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="media">
+                      <a class="pull-left" href="#">
+                        <img class="media-object img-circle" src="https://lorempixel.com/30/30/people/7/" alt="">
+                      </a>
+                      <div class="media-body">
+                        <h4 class="media-heading"> 
+                          <%= msg.user.username %>
+                          <span class="small pull-right">12:28 PM</span>
+                        </h4>
+                        <p><%= msg.message.text %></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+              <% }); %>
+            </div>
+          </div>
+          <div class="portlet-footer">
+            <div class="form-group">
+              <textarea id="task-input-box" 
+              class="form-control" placeholder="Enter message..."></textarea>
+            </div>
+            <div class="form-group">
+              <% if(users) { %>
+                <% _.each(users, function(user) { %>
+                  <button
+                    type="button"
+                    userName="<%= user.username %>"
+                    class="btn btn-warning btn-circle btn-lg user-image">
+                    <%= user.username[0].toUpperCase() %>
+                  </button>
+                <% }); %>
+              <% } %>
+              <button
+                type="button"
+                onclick="showIviteForm(this)"
+                class="btn btn-warning btn-circle btn-lg">
+                <i class="glyphicon glyphicon-plus"></i>
+              </button>
+              <button 
+                type="button" 
+                taskId=<%= activeTask._id %> 
+                id="update-task"
+                userId="<%= userId %>"
+                class="btn btn-default pull-right">
+                Send
+              </button>
+              <p id="hover-user-data" style="position:relative; display: none;">sdfsdf</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.col-md-4 -->
+  </div>
+</div>

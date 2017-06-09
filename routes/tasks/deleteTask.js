@@ -1,4 +1,5 @@
-var Task = require('../../models/task');
+var Task = require('../../models/task')
+  , User = require('../../models/user');
 
 
 exports.deleteTask = function(req, res) {
@@ -10,12 +11,29 @@ exports.deleteTask = function(req, res) {
       if(task._id == id)
         return true;
     });
-    
 
     if (isThisUserTask) {
       Task.remove({ _id: id }, function(err){
       	if (err) throw err;
-      	res.send({ success: 'removed' });
+        User.findOne({ username: req.user.username }, function(err, user) {
+          if (err) throw err;
+        
+          var index = user.tasks.findIndex(function(task) {
+            if(task._id == id) {
+              return true;
+            }
+          });
+
+          console.log(index);
+
+          if(index != -1) {
+            user.tasks.splice(index, 1);
+            user.save();
+            console.log('index',index);
+
+            res.send({ success: 'removed' });
+          }
+        });
       });
     }
   } else {

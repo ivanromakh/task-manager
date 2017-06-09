@@ -1,0 +1,8 @@
+<div class="row invite-form">
+  <div class="alert alert-success" id="invite-success" style="display:none"></div>
+  <div class="alert alert-danger" id="invite-danger" style="display:none"></div>
+  <h3> Invite form </h3>
+  <input type="email" class="form-control" taskId=<%= activeTask._id %> id="invite-email" placeholder="Enter email"  name="email">
+  <button onclick="canselInvite()"> Cancel </button>
+  <button onclick="inviteUser()">Invite</button>
+</div>

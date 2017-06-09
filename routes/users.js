@@ -1,7 +1,6 @@
 var express = require('express')
     , router = express()
     , passport = require('passport')
-    , formidable = require('formidable')
     , fs = require('fs')
 
     , config = require('../config/config.js')
@@ -11,41 +10,42 @@ var express = require('express')
 
 
 router.get('/login', function(req, res){
-  res.render('users/login');
+  res.render('users/login', { username: null });
 });
 
 router.get('/profile', function(req, res){
   if(req.isAuthenticated()){
-    User.findOne({ username :req.user.username }, function(err, user){
+    User.findOne({ username :req.user.username }, function(err, user) {
       res.render('users/profile', {
-        user: user
+        user: user,
+        username: user.username
       });
     });
-  }
-  else{
+  } else {
     res.redirect('login');
   }
 });
 
 router.post('/profile', function(req, res){
   if(req.isAuthenticated()){
-    User.findOne({ username: req.user.username }, function(err, user){
+    User.findOne({ username: req.user.username }, function(err, user) {
       let image = req.files.image;
-      if(image){
+      if(image) {
         var imageDir = __dirname + '/../public/images/users/'+ user.username;
-        if (!fs.existsSync(imageDir)){
+        if (!fs.existsSync(imageDir)) {
             fs.mkdirSync(imageDir);
         }
         imageDir += '/' + image.name;
         image.mv(imageDir);
-        if(user.image){
+        if(user.image) {
           fs.unlink(__dirname + '/../public' + user.image.replace( config.host, ''));
         }
         user.image = config.host + '/images/users/' + user.username + '/' + image.name;
         user.save();
       }
       res.render('users/profile', {
-        user: user
+        user: user,
+        username: user.username
       });
     });
   }
@@ -60,15 +60,12 @@ router.post('/login',
 });
 
 router.get('/register', function(req, res){
-  res.render('users/register');
+  res.render('users/register', { username: null });
 });
 
 router.post('/register', register.postRegister);
 
-passport.use('local.signup', new LocalStrategy(
-  function(username, email, password, done) {
-    console.log('User sign in: ', username);
-}));
+passport.use('local.signup', new LocalStrategy(function(){ return;}));
 
 passport.serializeUser(function(user, done) {
   done(null, user.id);
@@ -87,16 +84,15 @@ router.get('/logout', function(req, res){
   res.redirect('/users/login');
 });
 
-router.get('/confirm/:id', function(req, res){
-  User.findOne({confirmId: req.params.id}, function(err, user){
-    if(!err && user){
+router.get('/confirm/:id', function(req, res) {
+  User.findOne({confirmId: req.params.id}, function(err, user) {
+    if(!err && user) {
       user.active = true;
       console.log(user);
       user.save();
       console.log('User ', user.username, ' activated');
       res.redirect('../login');
-    }
-    else{
+    } else {
       res.send("This is a some site");
     }
   });
