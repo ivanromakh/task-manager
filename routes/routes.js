@@ -14,7 +14,7 @@ router.use("/active-task", activeTask.activeTask);
 router.use("/delete-task", deleteTask.deleteTask);
 router.use("/create-task", createTask.createTask);
 
-router.user("/tasks/accept/:id/:token", acceptTask.acceptTask);
+router.use("/tasks/accept/:id/:token", acceptTask.acceptTask);
 router.use("/tasks", tasks.tasks);
 
 router.use("/", tasks.main);

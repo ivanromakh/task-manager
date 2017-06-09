@@ -15,8 +15,7 @@ var TaskSchema = mongoose.Schema({
   invitations: [{
     _id: String,
     token: String
-  }
-  ]
+  }],
   users: [{
     _id: String
   }]

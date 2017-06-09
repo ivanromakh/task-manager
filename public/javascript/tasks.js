@@ -1,7 +1,8 @@
 var hostname = window.location.hostname + ':' + window.location.port;
 $(document).ready(function(){
   $('.user-image').hover(function() {
-    var userName = $('.user-image').attr('userName');
+    var userName = $(this).attr('userName');
+    console.log(userName);
     $('#hover-user-data').html(userName).css('display', 'block');
   }, function() {
     $('#hover-user-data').css('display', 'none');

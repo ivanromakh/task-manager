@@ -29,9 +29,7 @@ function getUserIds(msg) {
 }
 
 function findUserById(user) {
-  if(user._id == this.userId) {
-    return true;
-  }
+  return user._id == this.userId;
 }
 
 function addUserToMessage(msg) {
@@ -42,20 +40,13 @@ function addUserToMessage(msg) {
   return mss;
 }
 
-
 function getMessages(err, task, users) {
   if (err) throw err;
-
   var messages = task.messages.map(addUserToMessage, { users: users });
-
   if(!messages) {
     messages = [];
   }
   return messages;
-}
-
-function inputUsers(user) {
-  console.log(user);
 }
 
 exports.tasks = function(req, res) {
@@ -65,8 +56,9 @@ exports.tasks = function(req, res) {
   if(req.isAuthenticated()) {
     user = req.user;
 
-    Task.find({ userId: user._id }, function(err, tasks) {
+    Task.find({ 'users._id': user._id }, function(err, tasks) {
       if (err) throw err;
+      console.log(tasks);
 
       Task.findOne({ _id: user.activeTask }, function(err, task) {
         if (err) throw err;
