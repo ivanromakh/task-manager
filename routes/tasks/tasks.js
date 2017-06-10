@@ -58,7 +58,6 @@ exports.tasks = function(req, res) {
 
     Task.find({ 'users._id': user._id }, function(err, tasks) {
       if (err) throw err;
-      console.log(tasks);
 
       Task.findOne({ _id: user.activeTask }, function(err, task) {
         if (err) throw err;

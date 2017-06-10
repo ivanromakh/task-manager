@@ -16,18 +16,16 @@ var express = require("express")
   , fileUpload = require('express-fileupload')
   , http = require('http').Server(app)
   , io = require('socket.io')(http)
+  , socket = require('./socket/socket_connect')(io)
   
   , auth = require('./routes/auth')
   , users = require("./routes/users")
   , routes = require('./routes/routes')
-  // this file have only auth tokens and ip address 
-  // so this is not present in github
   , config = require('./config/config');
 
 var Task = require('./models/task');
 var User = require('./models/user');
   
-var onConnect = require('./socket/socket_connect');
 require('./config/passport.js');
 
 mongoose.connect(config.db_url);
@@ -74,30 +72,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use('/auth', auth);
 app.use("/users", users);
 app.use('/', routes);
-
-io.on('connection', function(socket){
-  socket.on('update-task', function(msg){
-    console.log();
-    var userId = msg.userId;
-    var taskId = msg.taskId;
-    var text = msg.text;
-
-    Task.findOne({_id: taskId}, function(err, task) {
-      var date = new Date().getTime();
-      task.messages.push({ text: text, userId: userId, createdAt: date});
-      task.save();
-
-      User.findOne({ _id: userId }, function(err, user) {
-        console.log('user-write', user);
-        io.sockets.emit('reload-page');
-      });
-    });
-  });
-
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
-  });
-});
 
 http.listen(config.port, config.ipaddress);
 

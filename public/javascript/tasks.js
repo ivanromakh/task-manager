@@ -70,25 +70,6 @@ function showIviteForm(obj) {
   $('#overlay-top, #overlay-left').fadeIn(500);
 }
 
-function inviteUser() {
-  var email = $('#invite-email').val();
-  var taskId = $('#invite-email').attr('taskId');
-
-  $.post("/invite-user", {
-    taskId: taskId,
-    email: email
-  })
-  .done(function(data) {
-    if(data.error) {
-      $('#invite-danger').html(data.error);
-      $('#invite-danger').css('display', 'block');
-    }
-    if(data.success) {
-      $('.invite-form').css('display', 'none');
-    }
-  });
-}
-
 function canselInvite() {
   $('.invite-form').css('display', 'none');
 }

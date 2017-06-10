@@ -71,16 +71,40 @@
     </script>
     <script>
       var socket = io();
+      var userId = $('#update-task').attr('userId');
+      var taskId = $('#invite-email').attr('taskId');
+
+      socket.emit("send-task-id", {
+        taskId: taskId
+      });
+
+      socket.emit("send-user-id", {
+        userId: userId
+      });
+
+      socket.on('invite-error', function(msg) {
+        $('#invite-danger').html(msg.error);
+        $('#invite-danger').css('display', 'block');
+      });
 
       socket.on('reload-page', function(msg) {
         console.log('123', msg);
         window.location.reload();
       });
 
+      function inviteUser() {
+        console.log(123);
+        var email = $('#invite-email').val();
+        
+        socket.emit('invite-user', {
+          taskId: taskId,
+          email: email
+        });
+      }
+
       $('#update-task').click(function() {
         var text = $('#task-input-box').val();
         var taskId = $('#update-task').attr('taskId');
-        var userId = $('#update-task').attr('userId');
 
         if(text) {
           socket.emit('update-task', { 
@@ -89,7 +113,7 @@
             userId: userId
           });
         }
-      })
+      });
     </script>
   </body>
 </html>
