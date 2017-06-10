@@ -1,7 +1,7 @@
 var config = require('../config/config.js')
   , UUID = require('uuid')
   , User = require('../models/user')
-  , mailer = require('../mail/mailer.js');
+  , mailer = require('../config/auth/mailer.js');
 
 
 var message = mailer.message;
