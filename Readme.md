@@ -117,4 +117,8 @@ module.exports = {
     node server.js
 
 
-
+## Testing ##
+I used mocha package so if you wanna to test it you should install in global
+    npm install --global mocha
+then just run next command and testing will start
+    mocha
