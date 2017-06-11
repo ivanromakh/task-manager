@@ -10,12 +10,9 @@ var express = require("express")
   , mongoose = require('mongoose')
   , path    = require("path")
   , bodyParser = require("body-parser")
-  , cookieParser = require("cookie-parser")
   , LocalStrategy = require('passport-local').Strategy
   , ejs = require('ejs')
   , fileUpload = require('express-fileupload')
-  , http = require('http').Server(app)
-  , io = require('socket.io')(http)
   , socket = require('./socket/socket_connect')(io)
   
   , auth = require('./routes/auth')
@@ -37,9 +34,8 @@ app.set("users", __dirname + "/views/users")
 
 app.set("view engine", "ejs");
 
-app.use(bodyParser({limit: '20mb'}));
+app.use(bodyParser());
 app.use(fileUpload());
-app.use(cookieParser("61d333a8-6325-4506-96e7-a180035cc26f"));
 
 // Express Session
 app.use(session({
@@ -72,6 +68,7 @@ app.use('/auth', auth);
 app.use("/users", users);
 app.use('/', routes);
 
-http.listen(config.port, config.ipaddress);
 
-exports.app = app;
+exports.server = http;
+var server = http.listen(config.port, config.ipaddress);
+

@@ -6,8 +6,7 @@ exports.deleteTask = function(req, res) {
   if(req.isAuthenticated()) {
     var id = req.body.id;
     var userTasks = req.user.tasks;
-    console.log(req.user);
-    console.log(id, userTasks);
+
     var isThisUserTask = userTasks.find(function(task) {
       if(task._id == id)
         return true;
@@ -25,22 +24,17 @@ exports.deleteTask = function(req, res) {
             }
           });
 
-          console.log(index);
-
           if(index != -1) {
             user.tasks.splice(index, 1);
             user.save();
-            console.log('index',index);
-
             res.send({ success: 'removed' });
           }
         });
       });
     } else {
-      res.send('Task is not found');
-      console.log('Task is not found');
+      res.send({ error: 'task is not found' });
     }
   } else {
-    res.send('You are not sign in');
+    res.send({ error: 'you are not sign in' });
   }
 }

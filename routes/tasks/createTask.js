@@ -20,7 +20,7 @@ exports.createTask = function(req, res) {
           if(err) throw err;
           user.tasks.push({ title: title, _id: task._id });
           user.save();
-          res.send({ success: 'created' });
+          res.send({ success: 'created', taskId: task._id });
         });
       }
     });

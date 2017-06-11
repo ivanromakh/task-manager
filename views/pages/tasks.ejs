@@ -3,8 +3,6 @@
   <head>
     <% include ../partials/head.ejs %>
     <script src="/javascript/tasks.js"></script>
-    <script src="/javascript/tasks.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <link rel="stylesheet" href="/stylesheets/table.css" >
     <link rel="stylesheet" href="/stylesheets/task-editor.css" >
     <link rel="stylesheet" href="/stylesheets/chat-box.css" >
@@ -14,109 +12,52 @@
   </head>
   <body>
     <% include ../partials/nav-bar.ejs %>
-    <div ng-app="tasks" ng-controller="tasks-controller">
-      <div class='row'>
-        <div 
-          class="alert alert-danger"
-          id="alert-danger" 
-          style="margin: 20%; display:none;">
-        </div>
+    <div class='row'>
+      <div 
+        class="alert alert-danger"
+        id="alert-danger" 
+        style="margin: 20%; display:none;">
       </div>
-      <div class='row'>
-        <div class="col-md-8 left-col" id="container">
-          <div class='row'>
-            <h2 style="text-align: center"> My tasks </h2>
-          </div>
-          <button onclick="showForm(this)"
-            class="btn btn-info btn-lg show-task-form">
-            <span class="glyphicon glyphicon-plus-sign">
-            </span> 
-            Plus
+    </div>
+    <div class='row'>
+      <div class="col-md-8 left-col" id="container">
+        <div class='row'>
+          <h2 style="text-align: center"> My tasks </h2>
+        </div>
+        <button onclick="showForm(this)"
+          class="btn btn-info btn-lg show-task-form">
+          <span class="glyphicon glyphicon-plus-sign">
+          </span> 
+          Plus
+        </button>
+        <div id='create-task-form'>
+          <label style="margin:10px">Task name:
+            <input id="input-task-name" style="margin:10px" />
+          </label>
+          <button onclick="createTask()" style="margin:10px">
+            create
           </button>
-          <div id='create-task-form'>
-            <label style="margin:10px">Task name:
-              <input id="input-task-name" style="margin:10px" />
-            </label>
-            <button onclick="createTask()" style="margin:10px">
-              create
-            </button>
-          </div>
-          <% _.each(tasks, function(task) { %>
-            <ul class="list-group">
-              <li class="list-group-item" taskId=<%=task.id %> > 
-                <%=task.title %>
-                <button class="pull-right" onclick="showTask(this)"> See more </button> 
-                <button class="pull-right" onclick="deleteTask(this)"> Remove </button>
-              </li>
-            </ul>
-            <task name=<%=task.name %> />
-          <% }); %>
         </div>
-        <div right-column">
-          <% if (activeTask) { %>
-            <% include ../partials/chat_box.ejs %>
-            <% include ../partials/invite_form.ejs %>
-          <% } %>
-        </div>
+        <% _.each(tasks, function(task) { %>
+          <ul class="list-group">
+            <li class="list-group-item" taskId=<%=task.id %> > 
+              <%=task.title %>
+              <button class="pull-right" onclick="showTask(this)"> See more </button> 
+              <button class="pull-right" onclick="deleteTask(this)"> Remove </button>
+            </li>
+          </ul>
+          <task name=<%=task.name %> />
+        <% }); %>
+      </div>
+      <div right-column">
+        <% if (activeTask) { %>
+          <% include ../partials/chat_box.ejs %>
+          <% include ../partials/invite_form.ejs %>
+        <% } %>
       </div>
     </div>
     <% include ../partials/fotter.ejs %>
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-      //test angular
-      var app = angular.module('tasks', []);
-      app.controller('tasks-controller', function($scope) {
-        console.log($scope);
-      });
-    </script>
-    <script>
-      var socket = io("http://taskmanager-theare.rhcloud.com:8000");
-
-      $(document).ready(function() {
-        
-        var userId = $('#update-task').attr('userId');
-        var taskId = $('#invite-email').attr('taskId');
-
-        socket.emit("send-task-id", {
-          taskId: taskId
-        });
-
-        socket.emit("send-user-id", {
-          userId: userId
-        });
-
-        socket.on('invite-error', function(msg) {
-          $('#invite-danger').html(msg.error);
-          $('#invite-danger').css('display', 'block');
-        });
-
-        socket.on('reload-page', function(msg) {
-          window.location.reload();
-        });
-
-        $('#update-task').click(function() {
-          var text = $('#task-input-box').val();
-          var taskId = $('#update-task').attr('taskId');
-
-          if(text) {
-            socket.emit('update-task', { 
-              text: text,
-              taskId: taskId,
-              userId: userId
-            });
-          }
-        });
-      });
-
-      function inviteUser() {
-        var taskId = $('#invite-email').attr('taskId');
-        var email = $('#invite-email').val();
-          
-        socket.emit('invite-user', {
-          taskId: taskId,
-          email: email
-        });
-      }      
-    </script>
+    <script src="/javascript/task_socket.js"></script>
   </body>
 </html>

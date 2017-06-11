@@ -60,7 +60,6 @@ exports.postRegister = function (req, res){
         username: username,
         password: password,
         confirmId: id,
-        shopping: []
       });
 
       User.createUser(newUser, function(err, user){
@@ -74,6 +73,7 @@ exports.postRegister = function (req, res){
           if (err) throw err;
       });
       req.flash('success_msg', 'Now you are sign up, but you must check your post for activation link');
+      res.status(201);
       res.redirect('/users/login');
     });
   });   

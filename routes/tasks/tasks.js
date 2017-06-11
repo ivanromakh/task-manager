@@ -94,7 +94,7 @@ exports.main = function(req, res) {
   if(req.isAuthenticated()) {
     user = req.user;
   }
-
+  res.status(200);
   res.render("main", {
     title : 'Home',
     username: user.username

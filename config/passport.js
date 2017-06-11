@@ -19,7 +19,6 @@ passport.use('local.login', new LocalStrategy(
     User.comparePassword(password, user.password, function(err, isMatch){
       if(err) throw err;
       if(isMatch){
-        console.log('try to login: ', user.active);
         if(user.active){
           return done(null, user);
         }
@@ -37,7 +36,6 @@ passport.use('local.login', new LocalStrategy(
 passport.use(new GoogleStrategy(configAuth.google,
   function(accessToken, refreshToken, profile, done) {
     process.nextTick(function(){
-      console.log(123);
       User.findOne({'google.id': profile.id}, function(err, user){
         if(err) return done(err);
         if(user) return done(null, user);
@@ -60,7 +58,6 @@ passport.use(new GoogleStrategy(configAuth.google,
 passport.use(new InstagramStrategy(configAuth.instagram,
   function(accessToken, refreshToken, profile, done) {
     process.nextTick(function(){
-      console.log(profile);
       User.findOne({'instagram.id': profile.id}, function(err, user){
         if(err) return done(err);
         if(user) return done(null, user);
@@ -91,7 +88,6 @@ passport.use(new FacebookStrategy(configAuth.facebookAuth,
           newUser.facebook.id = profile.id;
           newUser.facebook.token = accessToken;
           newUser.name = newUser.username = newUser.facebook.name = profile.displayName;
-          console.log(profile);
           newUser.save(function(err){
             if(err) throw err;
             return done(null, newUser);

@@ -15,14 +15,12 @@ exports = module.exports = function(io){
 
     socket.on("send-task-id", function(msg){
       var taskId = msg.taskId;
-      console.log('joing taskId', taskId);
       socket.join(taskId);
     });
 
     socket.on("invite-user", function(msg) {
       var taskId = msg.taskId;
       var userEmail = msg.email;
-      console.log('taskid: ',taskId);
 
       Task.findOne({ _id: taskId }, function(err, task) {
         if(err) throw err;
@@ -76,7 +74,6 @@ exports = module.exports = function(io){
         task.save();
 
         User.findOne({ _id: userId }, function(err, user) {
-          console.log('user-write', user);
           io.sockets.emit('reload-page');
         });
       });

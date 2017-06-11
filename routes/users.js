@@ -53,7 +53,7 @@ router.post('/profile', function(req, res){
 
 router.post('/login',
   passport.authenticate('local.login', {
-    successRedirect:'/', failureRedirect:'/users/login',failureFlash: true
+    successRedirect:'/', failureRedirect:'/users/login', failureFlash: true
   }),
   function(req, res) {
     res.redirect('users/login');
@@ -65,7 +65,7 @@ router.get('/register', function(req, res){
 
 router.post('/register', register.postRegister);
 
-passport.use('local.signup', new LocalStrategy(function(){ return;}));
+passport.use('local.signup', new LocalStrategy(function(){ return; }));
 
 passport.serializeUser(function(user, done) {
   done(null, user.id);
@@ -88,9 +88,7 @@ router.get('/confirm/:id', function(req, res) {
   User.findOne({confirmId: req.params.id}, function(err, user) {
     if(!err && user) {
       user.active = true;
-      console.log(user);
       user.save();
-      console.log('User ', user.username, ' activated');
       res.redirect('../login');
     } else {
       res.send("This is a some site");
