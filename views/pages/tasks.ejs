@@ -34,19 +34,24 @@
           <label style="margin:10px">Task name:
             <input id="input-task-name" style="margin:10px" />
           </label>
-          <button onclick="createTask()" style="margin:10px">
+          <button class="btn btn-primary" onclick="createTask()" style="margin:10px">
             create
           </button>
         </div>
         <% _.each(tasks, function(task) { %>
           <ul class="list-group">
             <li class="list-group-item" taskId=<%=task.id %> > 
-              <%=task.title %>
-              <button class="pull-right" onclick="showTask(this)"> See more </button> 
-              <button class="pull-right" onclick="deleteTask(this)"> Remove </button>
+              <p> 
+                <%=task.title %>
+                <button class="btn btn-primary pull-right" onclick="showTask(this)"> 
+                  See more 
+                </button> 
+                <button class="btn btn-primary pull-right" onclick="deleteTask(this)"> 
+                  Remove 
+                </button>
+              </p>
             </li>
           </ul>
-          <task name=<%=task.name %> />
         <% }); %>
       </div>
       <div right-column">

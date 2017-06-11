@@ -19,7 +19,8 @@ function showForm(obj) {
 }
 
 function showTask(obj) {
-  var id = $(obj).parent().attr("taskId");
+  var id = $(obj).parent().parent().attr("taskId");
+
   if(id) {
     $.post("/active-task", {
       id: id,
@@ -31,7 +32,7 @@ function showTask(obj) {
 }
 
 function deleteTask(obj) {
-  var id = $(obj).parent().attr("taskId");
+  var id = $(obj).parent().parent().attr("taskId");
 
   if(id) {
     $.post("/delete-task", {

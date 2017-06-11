@@ -11,21 +11,15 @@
           </div>
           <div class="portlet-widgets">
             <div class="btn-group">
-              <button 
-                type="button" 
-                class="btn btn-white dropdown-toggle btn-xs" 
-                data-toggle="dropdown">
-                <i class="fa fa-circle text-green"></i> Status
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="#"><i class="fa fa-circle text-green"></i> Online</a>
-                </li>
-                <li><a href="#"><i class="fa fa-circle text-orange"></i> Away</a>
-                </li>
-                <li><a href="#"><i class="fa fa-circle text-red"></i> Offline</a>
-                </li>
-              </ul>
+              <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                  Status <span class="caret"></span>
+                </button>
+                <ul id="task-status-change" class="dropdown-menu" role="menu">
+                  <li><a href="" status="complite">Complite</a></li>
+                  <li><a href="" status="inprocess">In process</a></li>
+                </ul>
+              </div>
             </div>
             <span class="divider"></span>
             <a 

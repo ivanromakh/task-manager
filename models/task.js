@@ -18,7 +18,8 @@ var TaskSchema = mongoose.Schema({
   }],
   users: [{
     _id: String
-  }]
+  }],
+  status: String
 });
 
 var Task = module.exports = mongoose.model('Task', TaskSchema);
