@@ -13,7 +13,7 @@ var db_login = 'ivan';
 var db_password = '123';
 
 if(process.env.OPENSHIFT_APP_NAME){
-	host = 'http://wood-theare.rhcloud.com'
+	host = 'http://taskmanager-theare.rhcloud.com'
     connection_string = localhost + process.env.OPENSHIFT_APP_NAME;
 	db_login = 'admin';
 	db_password = 'ZJX-RQncgTKz';

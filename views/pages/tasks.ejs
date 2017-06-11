@@ -43,7 +43,7 @@
           </div>
           <% _.each(tasks, function(task) { %>
             <ul class="list-group">
-              <li class="list-group-item" id=<%=task.id %> > 
+              <li class="list-group-item" taskId=<%=task.id %> > 
                 <%=task.title %>
                 <button class="pull-right" onclick="showTask(this)"> See more </button> 
                 <button class="pull-right" onclick="deleteTask(this)"> Remove </button>
@@ -70,50 +70,53 @@
       });
     </script>
     <script>
-      var socket = io();
-      var userId = $('#update-task').attr('userId');
-      var taskId = $('#invite-email').attr('taskId');
+      var socket = io("http://taskmanager-theare.rhcloud.com:8000");
 
-      socket.emit("send-task-id", {
-        taskId: taskId
-      });
+      $(document).ready(function() {
+        
+        var userId = $('#update-task').attr('userId');
+        var taskId = $('#invite-email').attr('taskId');
 
-      socket.emit("send-user-id", {
-        userId: userId
-      });
+        socket.emit("send-task-id", {
+          taskId: taskId
+        });
 
-      socket.on('invite-error', function(msg) {
-        $('#invite-danger').html(msg.error);
-        $('#invite-danger').css('display', 'block');
-      });
+        socket.emit("send-user-id", {
+          userId: userId
+        });
 
-      socket.on('reload-page', function(msg) {
-        console.log('123', msg);
-        window.location.reload();
+        socket.on('invite-error', function(msg) {
+          $('#invite-danger').html(msg.error);
+          $('#invite-danger').css('display', 'block');
+        });
+
+        socket.on('reload-page', function(msg) {
+          window.location.reload();
+        });
+
+        $('#update-task').click(function() {
+          var text = $('#task-input-box').val();
+          var taskId = $('#update-task').attr('taskId');
+
+          if(text) {
+            socket.emit('update-task', { 
+              text: text,
+              taskId: taskId,
+              userId: userId
+            });
+          }
+        });
       });
 
       function inviteUser() {
-        console.log(123);
+        var taskId = $('#invite-email').attr('taskId');
         var email = $('#invite-email').val();
-        
+          
         socket.emit('invite-user', {
           taskId: taskId,
           email: email
         });
-      }
-
-      $('#update-task').click(function() {
-        var text = $('#task-input-box').val();
-        var taskId = $('#update-task').attr('taskId');
-
-        if(text) {
-          socket.emit('update-task', { 
-            text: text,
-            taskId: taskId,
-            userId: userId
-          });
-        }
-      });
+      }      
     </script>
   </body>
 </html>

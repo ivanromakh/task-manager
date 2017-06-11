@@ -36,7 +36,6 @@ app.set("views", __dirname + "/views/pages");
 app.set("users", __dirname + "/views/users")
 
 app.set("view engine", "ejs");
-app.engine('jsx', require('express-react-views').createEngine());
 
 app.use(bodyParser({limit: '20mb'}));
 app.use(fileUpload());

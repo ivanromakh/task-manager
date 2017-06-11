@@ -6,7 +6,8 @@ exports.deleteTask = function(req, res) {
   if(req.isAuthenticated()) {
     var id = req.body.id;
     var userTasks = req.user.tasks;
-
+    console.log(req.user);
+    console.log(id, userTasks);
     var isThisUserTask = userTasks.find(function(task) {
       if(task._id == id)
         return true;
@@ -35,6 +36,9 @@ exports.deleteTask = function(req, res) {
           }
         });
       });
+    } else {
+      res.send('Task is not found');
+      console.log('Task is not found');
     }
   } else {
     res.send('You are not sign in');
