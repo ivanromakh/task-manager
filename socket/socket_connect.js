@@ -10,6 +10,7 @@ exports = module.exports = function(io){
     
     socket.on("send-user-id", function(msg) {
       var userId = msg.userId;
+      console.log('userIDjoin', msg.userId);
       socket.join(userId);
     });
 
@@ -24,40 +25,17 @@ exports = module.exports = function(io){
 
       Task.findOne({ _id: taskId }, function(err, task) {
         if(err) throw err;
-
+        
         if(task) {
+          console.log('taskFinded');
           User.findOne({ email: userEmail }, function(err, user) {
             if(err) throw err;
 
-            if(user) {
-              if(user.active) {
-                var userIndex = task.users.findIndex(getUserIndex, { userId: user._id });
-                if(userIndex >= 0) {
-                  socket.emit("invite-error", {
-                    error: 'User already have access to this task'
-                  });
-                  return;
-                }
-                task.users.push({ _id: user._id });
-                task.save();
-                // reload groups 
-                io.to(task._id).emit('reload-page');
-                // reload user which is invited
-                io.to(user._id).emit('reload-page');
-              } else {
-                socket.emit("invite-error", {
-                  error: 'You can`t invite user whom is not active'
-                });
-              } 
-            } else {
-              socket.emit("invite-error", {
-                error: 'User is not found'
-              });
-            }
-          });
-        } else {
-          socket.emit("invite-error", {
-            error: 'Task is not found'
+            if(user && user.active) {
+              console.log('userFinded', user._id);
+              io.to(task._id).emit('reload-page');
+              io.to(user._id).emit('reload-page');
+            } 
           });
         }
       });
@@ -66,16 +44,9 @@ exports = module.exports = function(io){
     socket.on('update-task', function(msg){
       var userId = msg.userId;
       var taskId = msg.taskId;
-      var text = msg.text;
 
-      Task.findOne({ _id: taskId }, function(err, task) {
-        var date = new Date().getTime();
-        task.messages.push({ text: text, userId: userId, createdAt: date });
-        task.save();
-
-        User.findOne({ _id: userId }, function(err, user) {
-          io.sockets.emit('reload-page');
-        });
+      User.findOne({ _id: userId }, function(err, user) {
+        io.to(taskId).emit('reload-page');
       });
     });
 

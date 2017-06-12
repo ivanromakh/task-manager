@@ -30,7 +30,7 @@
           </span> 
           Plus
         </button>
-        <div id='create-task-form'>
+        <div id='create-task-form' userId=<%= userId %> >
           <label style="margin:10px">Task name:
             <input id="input-task-name" style="margin:10px" />
           </label>
@@ -41,7 +41,10 @@
         <% _.each(tasks, function(task) { %>
           <ul class="list-group">
             <li class="list-group-item" taskId=<%=task.id %> > 
-              <p> 
+              <% if(task.status == "complite") { %>
+                <span class="glyphicon glyphicon-ok-circle fa-5x pull-left" style="font-size: 24px; color: green"></span>
+              <% } %>
+              <p style="margin-left: 4%">
                 <%=task.title %>
                 <button class="btn btn-primary pull-right" onclick="showTask(this)"> 
                   See more 

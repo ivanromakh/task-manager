@@ -5,13 +5,17 @@ var express = require('express')
   , createTask = require("./tasks/createTask")
   , deleteTask = require("./tasks/deleteTask")
   , changeStatus = require("./tasks/changeStatus")
+  , inviteUser = require("./tasks/inviteUser")
+  , updateTask = require("./tasks/updateTask")
   , tasks = require("./tasks/tasks");
 
 // ajax
 router.use("/active-task", activeTask.activeTask);
+router.use("/invite-user", inviteUser.inviteUser);
 router.use("/delete-task", deleteTask.deleteTask);
 router.use("/create-task", createTask.createTask);
-//router.use("/change-status", changeStatus.setStatus);
+router.use("/update-task", updateTask.updateTask);
+router.use("/change-status", changeStatus.setStatus);
 
 router.use("/tasks", tasks.tasks);
 

@@ -15,7 +15,7 @@ router.get('/login', function(req, res){
 
 router.get('/profile', function(req, res){
   if(req.isAuthenticated()){
-    User.findOne({ username :req.user.username }, function(err, user) {
+    User.findOne({ username : req.user.username }, function(err, user) {
       res.render('users/profile', {
         user: user,
         username: user.username

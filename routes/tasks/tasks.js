@@ -12,6 +12,7 @@ function renderTasks(res, user, tasks, task) {
     username: user.username,
     userId: user._id,
     activeTask: task,
+    date: new Date().getTime(),
     messages: []
   });
 }
@@ -59,8 +60,6 @@ exports.tasks = function(req, res) {
     Task.find({ 'users._id': user._id }, function(err, tasks) {
       if (err) throw err;
 
-      console.log(tasks);
-
       Task.findOne({ _id: user.activeTask }, function(err, task) {
         if (err) throw err;
 
@@ -80,7 +79,8 @@ exports.tasks = function(req, res) {
             userId: user._id,
             users: users,
             activeTask: task,
-            messages: messages
+            messages: messages,
+            date: new Date().getTime()
           });
         });
       });

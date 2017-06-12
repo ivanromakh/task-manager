@@ -10,11 +10,7 @@ var TaskSchema = mongoose.Schema({
   messages: [{
   	userId: String,
   	text: String,
-  	createdAt: String,
-  }],
-  invitations: [{
-    _id: String,
-    token: String
+  	createdAt: Number,
   }],
   users: [{
     _id: String
