@@ -24,7 +24,9 @@
               <label for="username" class="cols-sm-2 control-label">Login</label>
               <div class="cols-sm-10">
                 <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                  <span class="input-group-addon">
+                    <i class="fa fa-users fa" aria-hidden="true"></i>
+                  </span>
                   <input type="text" class="form-control" name="username" 
                     id="username"  placeholder="Enter login"/>
                 </div>
@@ -34,14 +36,18 @@
               <label for="password" class="cols-sm-2 control-label">Password</label>
               <div class="cols-sm-10">
                 <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                  <span class="input-group-addon">
+                    <i class="fa fa-lock fa-lg" aria-hidden="true"></i>
+                  </span>
                   <input type="password" class="form-control" 
                     name="password" id="password"  placeholder="Enter password"/>
                 </div>
               </div>
             </div>
             <div class="form-group ">
-              <button type="submit"  class="btn btn-primary btn-lg btn-block login-button">Sign in</button>
+              <button type="submit"  class="btn btn-primary btn-lg btn-block login-button">
+                Sign in
+              </button>
             </div>
             <img class='move' style='margin:10px;' onclick="facebook()" src="/images/social-icons/facebook.png" height="42" width="42">
             <img class='move' style='margin:10px;' onclick="google()" 
@@ -71,11 +77,11 @@
       }
 
       $(document).ready(function(){
-        $('.move').mouseover(function(event){
+        $('.move').mouseover(function(event) {
           $(this).css("opacity", "0.5"); 
         });
 
-        $('.move').mouseout(function(event){
+        $('.move').mouseout(function(event) {
           $(this).css("opacity", "1"); 
         });
       });

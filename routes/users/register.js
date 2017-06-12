@@ -1,12 +1,18 @@
-var config = require('../config/config.js')
+var express = require('express')
+  , router = express()
   , UUID = require('uuid')
-  , User = require('../models/user')
-  , mailer = require('../config/auth/mailer.js');
+  , config = require('../../config/config.js')
+  , User = require('../../models/user')
+  , mailer = require('../../config/auth/mailer.js')
 
 
 var message = mailer.message;
 
-exports.postRegister = function (req, res){
+router.get('/', function(req, res){
+  res.render('users/register', { username: null });
+});
+
+router.post('/', function (req, res) {
   var name = req.body.name;
   var email = req.body.email;
   var username = req.body.username;
@@ -76,5 +82,7 @@ exports.postRegister = function (req, res){
       res.status(201);
       res.redirect('/users/login');
     });
-  });   
-};
+  }); 
+});
+
+module.exports = router;

@@ -16,7 +16,7 @@ var express = require("express")
   , socket = require('./socket/socket_connect')(io)
   
   , auth = require('./routes/auth')
-  , users = require("./routes/users")
+  , users = require("./routes/users/users")
   , routes = require('./routes/routes')
   , config = require('./config/config');
 
